@@ -24,7 +24,7 @@
     "phpunit/phpunit-selenium": ">=1.4.1",
     "brianium/paratest": ">=0.12.1",
     "appium/php-client": ">=0.1.0"
-  }
+  },
   "autoload": {
     "psr-0": {"TestingBot": "src/"}
   },
