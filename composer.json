@@ -1,0 +1,34 @@
+{
+  "name": "testingbot/testingbot-php",
+  "type": "testingbot-php",
+  "description": "PHP version of the TestingBot API",
+  "keywords": ["testingbot", "api", "testing", "phpunit", "selenium", "appium"],
+  "homepage": "http://github.com/testingbot/testingbot-php",
+  "license": "Apache-2.0",
+  "authors": [{
+    "name": "Jochen Delabie",
+    "email": "info@testingbot.com",
+    "homepage": "https://testingbot.com"
+  }],
+  "repositories": [
+      {
+          "type": "vcs",
+          "url": "https://github.com/testingbot/testingbot-php"
+      }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": ">=4.5.1"
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "phpunit/phpunit-selenium": ">=1.4.1",
+    "brianium/paratest": ">=0.12.1",
+    "appium/php-client": ">=0.1.0"
+  }
+  "autoload": {
+    "psr-0": {"TestingBot": "src/"}
+  },
+  "support": {
+    "email": "info@testingbot.com"
+  }
+}
