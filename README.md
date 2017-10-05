@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/testingbot/testingbot-php.svg?branch=master)](https://travis-ci.org/testingbot/testingbot-php)
+
 Testingbot-PHP
 =======
 
@@ -33,6 +35,14 @@ To start, create a new `TestingBot\TestingBotAPI` object and pass in the key and
 ```
 
 Now you can use the various methods we've made available to interact with the API:
+
+### getBrowsers
+Gets a list of browsers you can test on
+
+```php
+	$api->getBrowsers();
+```
+
 
 ### getUserInfo
 Gets your user information
@@ -103,4 +113,11 @@ Gets a list of active tunnels for your account.
 
 ```php
 	$api->getTunnels();
+```
+
+### getAuthenticationHash
+Calculates the hash necessary to share tests with other people
+
+```php
+	$api->getAuthenticationHash($identifier);
 ```

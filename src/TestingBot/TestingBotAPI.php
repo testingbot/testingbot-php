@@ -112,12 +112,17 @@ class TestingBotAPI
 
 	public function getTunnels()
 	{
-		return $this->_doRequest("tunnels/", "GET");
+		return $this->_doRequest("tunnel/list", "GET");
 	}
 
 	public function getUserInfo()
 	{
 		return $this->_doRequest("user", "GET");
+	}
+
+	public function getBrowsers()
+	{
+		return $this->_doRequest("browsers", "GET");
 	}
 
 	public function updateUserInfo(array $details)
@@ -130,6 +135,15 @@ class TestingBotAPI
 		}
 
 		return $this->_doRequest("user", "PUT", $data);
+	}
+
+	public function getAuthenticationHash($identifier = null) {
+		if (!is_null($identifier)) 
+		{
+			return md5($this->_key . ":" . $this->_secret . ":" . $identifier);
+		}
+
+		return md5($this->_key . ":" . $this->_secret);
 	}
 
 	private function _doRequest($path, $method = 'POST', array $data = array())
@@ -153,11 +167,6 @@ class TestingBotAPI
 	private function _parseResult($response)
 	{
 		$result = json_decode($response, true);
-		if (empty($result))
-		{
-			throw new \Exception("An API error occurred: " . print_r($response, true));
-		}
-
 		return $result;
 	}
 }
