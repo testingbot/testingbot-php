@@ -31,7 +31,7 @@ or edit the `composer.json` file and add:
 To start, create a new `TestingBot\TestingBotAPI` object and pass in the key and secret you obtained from [TestingBot](https://testingbot.com/members/user/edit) 
 
 ```php
-	$api = new TestingBot\TestingBotAPI($key, $secret);
+$api = new TestingBot\TestingBotAPI($key, $secret);
 ```
 
 Now you can use the various methods we've made available to interact with the API:
@@ -40,7 +40,7 @@ Now you can use the various methods we've made available to interact with the AP
 Gets a list of browsers you can test on
 
 ```php
-	$api->getBrowsers();
+$api->getBrowsers();
 ```
 
 
@@ -48,14 +48,14 @@ Gets a list of browsers you can test on
 Gets your user information
 
 ```php
-	$api->getUserInfo();
+$api->getUserInfo();
 ```
 
 ### updateUserInfo
 Updates your user information
 
 ```php
-	$api->updateUserInfo(array('first_name' => 'test'));
+$api->updateUserInfo(array('first_name' => 'test'));
 ```
 
 ### updateJob
@@ -63,61 +63,61 @@ Updates a Test with Meta-data to display on TestingBot.
 For example, you can specify the test name and whether the test succeeded or failed:
 
 ```php
-	$api->updateJob($webdriverSessionID, array('name' => 'mytest', 'success' => true));
+$api->updateJob($webdriverSessionID, array('name' => 'mytest', 'success' => true));
 ```
 
 ### getJob
 Gets meta information for a job (test) by passing in the WebDriver sessionID of the test you ran on TestingBot:
 
 ```php
-	$api->getJob($webdriverSessionID);
+$api->getJob($webdriverSessionID);
 ```
 
 ### getJobs
 Gets a list of previous jobs/tests that you ran on TestingBot, order by last run:
 
 ```php
-	$api->getJobs(0, 10); // last 10 tests
+$api->getJobs(0, 10); // last 10 tests
 ```
 
 ### deleteJob
 Deletes a test from TestingBot
 
 ```php
-	$api->deleteJob($webdriverSessionID);
+$api->deleteJob($webdriverSessionID);
 ```
 
 ### stopJob
 Stops a running test on TestingBot
 
 ```php
-	$api->stopJob($webdriverSessionID);
+$api->stopJob($webdriverSessionID);
 ```
 
 ### getBuilds
 Gets a list of builds that you ran on TestingBot, order by last run:
 
 ```php
-	$api->getBuilds(0, 10); // last 10 builds
+$api->getBuilds(0, 10); // last 10 builds
 ```
 
 ### getBuild
 Gets a build from TestingBot (a group of tests)
 
 ```php
-	$api->getBuild($buildIdentifier);
+$api->getBuild($buildIdentifier);
 ```
 
 ### getTunnels
 Gets a list of active tunnels for your account.
 
 ```php
-	$api->getTunnels();
+$api->getTunnels();
 ```
 
 ### getAuthenticationHash
 Calculates the hash necessary to share tests with other people
 
 ```php
-	$api->getAuthenticationHash($identifier);
+$api->getAuthenticationHash($identifier);
 ```

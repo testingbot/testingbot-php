@@ -6,6 +6,5 @@ notifications:
   email: false
 install:
 - composer self-update
-- composer update --prefer-dist
 script:
 - phpunit tests/
