@@ -146,6 +146,58 @@ class TestingBotAPI
 		return md5($this->_key . ":" . $this->_secret);
 	}
 
+	public function uploadLocalFileToStorage($localFile)
+	{
+		if (!file_exists($localFile))
+		{
+			throw new \Exception("Could not find file to upload: " . $localFile);
+		}
+		$mime = mime_content_type($localFile);
+		$fileInfo = pathinfo($localFile);
+		$fileName = $fileInfo['basename'];
+		$cfile = curl_file_create($localFile, $mime, $fileName);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, "https://api.testingbot.com/v1/storage");
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curl, CURLOPT_USERPWD, $this->_key . ":" . $this->_secret);
+		curl_setopt($curl, CURLOPT_POSTFIELDS, array(
+			'file' => $cfile
+		));
+
+		$response = curl_exec($curl);
+		curl_close($curl);
+
+		return $this->_parseResult($response);
+	}
+
+	public function uploadRemoteFileToStorage($remoteFileUrl)
+	{
+		return $this->_doRequest("storage", "POST", array(
+			'url' => $remoteFileUrl
+		));
+	}
+
+	public function getStorageFile($appUrl)
+	{
+		return $this->_doRequest("storage/" . str_replace("tb://", "", $appUrl), "GET");
+	}
+
+	public function getStorageFiles($offset = 0, $count = 10)
+	{
+		$queryData = array(
+			'offset' => $offset,
+			'count' => $count
+		);
+
+		return $this->_doRequest("storage/?" . http_build_query($queryData), "GET");
+	}
+
+	public function deleteStorageFile($appUrl)
+	{
+		return $this->_doRequest("storage/" . str_replace("tb://", "", $appUrl), "DELETE");
+	}
+
 	private function _doRequest($path, $method = 'POST', array $data = array())
 	{
 		$curl = curl_init();

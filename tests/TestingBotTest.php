@@ -69,4 +69,37 @@
     	public function testCalculateAuthentication() {
     		$this->assertEquals($this->api->getAuthenticationHash("test"), "344ebf07233168c4882adf953a8a8c9b");
     	}
+
+    	public function testUploadLocalFileToStorage() {
+    		$response = $this->api->uploadLocalFileToStorage(realpath(dirname(__FILE__) . '/resources/test.apk'));
+    		$this->assertContains('tb://', $response['app_url']);
+    	}
+
+    	public function testUploadRemoteFileToStorage() {
+    		$response = $this->api->uploadRemoteFileToStorage('https://testingbot.com/appium/sample.apk');
+    		$this->assertContains('tb://', $response['app_url']);
+    	}
+
+    	public function testGetStoredFiles() {
+    		$response = $this->api->getStorageFiles();
+    		$currentTotal = $response['meta']['total'];
+    		$this->api->uploadLocalFileToStorage(realpath(dirname(__FILE__) . '/resources/test.apk'));
+    		$response = $this->api->getStorageFiles();
+    		$this->assertEquals($response['meta']['total'], $currentTotal + 1);
+    	}
+
+    	public function testStoredFileMetaData() {
+    		$response = $this->api->uploadLocalFileToStorage(realpath(dirname(__FILE__) . '/resources/test.apk'));
+    		$meta = $this->api->getStorageFile($response['app_url']);
+    		$this->assertEquals($meta['app_url'], $response['app_url']);
+    	}
+
+    	public function testDeleteStorageFile() {
+    		$response = $this->api->uploadLocalFileToStorage(realpath(dirname(__FILE__) . '/resources/test.apk'));
+    		$meta = $this->api->getStorageFile($response['app_url']);
+    		$this->assertEquals($meta['app_url'], $response['app_url']);
+    		$this->api->deleteStorageFile($response['app_url']);
+    		$meta = $this->api->getStorageFile($response['app_url']);
+    		$this->assertArrayHasKey('error', $meta);
+    	}
 	}

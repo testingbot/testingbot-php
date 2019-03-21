@@ -115,6 +115,43 @@ Gets a list of active tunnels for your account.
 $api->getTunnels();
 ```
 
+### uploadLocalFileToStorage
+Uploads a local file (.apk, .ipa, .zip) to TestingBot Storage.
+
+```php
+$api->uploadLocalFileToStorage($pathToLocalFile);
+```
+
+### uploadRemoteFileToStorage
+Uploads a remote file (.apk, .ipa, .zip) to TestingBot Storage.
+
+```php
+$api->uploadRemoteFileToStorage($urlToRemoteFile);
+```
+
+### getStorageFile
+Gets meta data from a file previously uploaded to TestingBot Storage.
+AppUrl is the `tb://` url you previously received from the TestingBot API.
+
+```php
+$api->getStorageFile($appUrl);
+```
+
+### getStorageFiles
+Gets meta data from all file previously uploaded to TestingBot Storage.
+
+```php
+$api->getStorageFiles();
+```
+
+### deleteStorageFile
+Deletes a file previously uploaded to TestingBot Storage.
+AppUrl is the `tb://` url you previously received from the TestingBot API.
+
+```php
+$api->deleteStorageFile($appUrl);
+```
+
 ### getAuthenticationHash
 Calculates the hash necessary to share tests with other people
 
