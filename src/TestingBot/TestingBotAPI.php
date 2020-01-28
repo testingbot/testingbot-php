@@ -218,7 +218,7 @@ class TestingBotAPI
 		return $this->_doRequest("storage/" . str_replace("tb://", "", $appUrl), "DELETE");
 	}
 
-	private function _doRequest($path, $method = 'POST', $data)
+	private function _doRequest($path, $method = 'POST', $data = array())
 	{
 		$curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "https://api.testingbot.com/v1/" . $path);
