@@ -70,6 +70,26 @@ class TestingBotAPI
 		return $this->_doRequest("tests/?" . http_build_query($queryData), "GET");
 	}
 
+	public function createLabTest($name, $baseUrl, $extras = array())
+	{
+		$postData = array_merge(array(
+			'test[name]' => $name,
+			'test[url]' => $baseUrl
+		), $extras);
+		return $this->_doRequest("lab/", "POST", $postData);
+	}
+
+	public function modifyLabTestSteps($labTestID, array $steps)
+	{
+		$processedSteps = array();
+
+		for ($i = 0; $i < sizeof($steps); $i++) {
+			$processedSteps[] = "steps[][order]=" . $i . "&steps[][cmd]=" . $steps[$i]['cmd'] . "&steps[][locator]=" . $steps[$i]['locator'] . "&steps[][value]=" . $steps[$i]['value'];
+		}
+
+		return $this->_doRequest("lab/" . $labTestID . "/steps", "POST", implode('&', $processedSteps));
+	}
+
 	public function deleteJob($sessionID)
 	{
 		if (empty($sessionID))
@@ -198,7 +218,7 @@ class TestingBotAPI
 		return $this->_doRequest("storage/" . str_replace("tb://", "", $appUrl), "DELETE");
 	}
 
-	private function _doRequest($path, $method = 'POST', array $data = array())
+	private function _doRequest($path, $method = 'POST', $data)
 	{
 		$curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, "https://api.testingbot.com/v1/" . $path);
@@ -207,7 +227,14 @@ class TestingBotAPI
         curl_setopt($curl, CURLOPT_USERPWD, $this->_key . ":" . $this->_secret);
         if (!empty($data))
         {
-        	curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        	if (is_array($data))
+        	{
+        		curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+        	}
+        	else
+        	{
+        		curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+        	}
         }
 
         $response = curl_exec($curl);
