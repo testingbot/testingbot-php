@@ -5,10 +5,7 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: [ '7.4', '8.0' ]
-    name: PHP ${{ matrix.php }} test
+    name: PHP test
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
