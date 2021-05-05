@@ -130,9 +130,24 @@ class TestingBotAPI
 		return $this->_doRequest("builds/" . $buildID, "GET");
 	}
 
+	public function deleteBuild($buildID)
+	{
+		if (empty($buildID))
+		{
+			throw new \Exception("Please use a valid buildID");
+		}
+
+		return $this->_doRequest("builds/" . $buildID, "DELETE");
+	}
+
 	public function getTunnels()
 	{
 		return $this->_doRequest("tunnel/list", "GET");
+	}
+
+	public function deleteTunnel($tunnelID)
+	{
+		return $this->_doRequest("tunnel/" . $tunnelID, "DELETE");
 	}
 
 	public function getUserInfo()
@@ -143,6 +158,21 @@ class TestingBotAPI
 	public function getBrowsers()
 	{
 		return $this->_doRequest("browsers", "GET");
+	}
+
+	public function getDevices()
+	{
+		return $this->_doRequest("devices", "GET");
+	}
+
+	public function getAvailableDevices()
+	{
+		return $this->_doRequest("devices/available", "GET");
+	}
+
+	public function getDevice($deviceID)
+	{
+		return $this->_doRequest("devices/" . $deviceID, "GET");
 	}
 
 	public function updateUserInfo(array $details)

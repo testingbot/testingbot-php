@@ -43,6 +43,26 @@ Gets a list of browsers you can test on
 $api->getBrowsers();
 ```
 
+### getDevices
+Gets a list of devices you can test on
+
+```php
+$api->getDevices();
+```
+
+### getAvailableDevices
+Gets a list of available devices you can test on
+
+```php
+$api->getAvailableDevices();
+```
+
+### getDevice
+Gets information for a specific device
+
+```php
+$api->getDevice($deviceID);
+```
 
 ### getUserInfo
 Gets your user information
@@ -108,11 +128,25 @@ Gets a build from TestingBot (a group of tests)
 $api->getBuild($buildIdentifier);
 ```
 
+### deleteBuild
+Deletes a build from TestingBot.
+
+```php
+$api->deleteBuild($buildIdentifier);
+```
+
 ### getTunnels
 Gets a list of active tunnels for your account.
 
 ```php
 $api->getTunnels();
+```
+
+### deleteTunnel
+Deletes an active tunnel.
+
+```php
+$api->deleteTunnel($tunnelID);
 ```
 
 ### uploadLocalFileToStorage
