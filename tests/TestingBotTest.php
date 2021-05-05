@@ -11,7 +11,7 @@
 	class TestingBotTest extends PHPUnit_Framework_TestCase {
 		private $api;
 
-		public function setup() {
+		protected function setUp(): void {
 			$key = getenv("TB_KEY");
 			$secret = getenv("TB_SECRET");
 
@@ -72,12 +72,12 @@
 
     	public function testUploadLocalFileToStorage() {
     		$response = $this->api->uploadLocalFileToStorage(realpath(dirname(__FILE__) . '/resources/test.apk'));
-    		$this->assertContains('tb://', $response['app_url']);
+    		$this->assertStringContainsStringIgnoringCase('tb://', $response['app_url']);
     	}
 
     	public function testUploadRemoteFileToStorage() {
     		$response = $this->api->uploadRemoteFileToStorage('https://testingbot.com/appium/sample.apk');
-    		$this->assertContains('tb://', $response['app_url']);
+    		$this->assertStringContainsStringIgnoringCase('tb://', $response['app_url']);
     	}
 
     	public function testGetStoredFiles() {
