@@ -1,0 +1,22 @@
+name: Test Changes
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: [ '7.4', '8.0' ]
+    name: PHP ${{ matrix.php }} test
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        uses: php-actions/composer@v5
+      - name: PHPUnit tests
+        uses: php-actions/phpunit@v2
+        env:
+          TB_KEY: ${{ secrets.TB_KEY }}
+          TB_SECRET: ${{ secrets.TB_SECRET }}
+        with:
+          configuration: tests/phpunit.xml
