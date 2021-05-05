@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/testingbot/testingbot-php.svg?branch=master)](https://travis-ci.org/testingbot/testingbot-php)
-
 Testingbot-PHP
 =======
 
