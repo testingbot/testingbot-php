@@ -1,0 +1,87 @@
+name: Release
+
+# Cutting a release is just pushing a version tag:
+#
+#     git tag 2.0.0 && git push origin 2.0.0
+#
+# Packagist picks up the new version automatically through its GitHub
+# integration (no token needed). This workflow only validates the tag and
+# publishes a GitHub Release, using the built-in GITHUB_TOKEN — there are no
+# secrets to configure.
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+-*'
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publish release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: curl, json, fileinfo
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      - name: Verify the tag matches Client::VERSION
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          version="$(php -r 'require "src/Client.php"; echo TestingBot\Client::VERSION;')"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::Tag '$tag' does not match Client::VERSION '$version'. Bump the VERSION constant before tagging."
+            exit 1
+          fi
+          echo "Tag and Client::VERSION agree: $version"
+
+      - name: Coding standards
+        run: composer cs-check
+
+      - name: Static analysis
+        run: composer phpstan
+
+      - name: Unit tests
+        run: composer test
+
+      - name: Extract release notes from CHANGELOG
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          awk -v ver="$version" '
+            $0 ~ "^## \\[" ver "\\]" {flag=1; next}
+            /^## / && flag {flag=0}
+            flag {print}
+          ' CHANGELOG.md > release-notes.md
+          if [ ! -s release-notes.md ]; then
+            echo "No CHANGELOG section found for $version; GitHub will auto-generate notes."
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -s release-notes.md ]; then
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --notes-file release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" \
+              --title "$GITHUB_REF_NAME" \
+              --generate-notes
+          fi

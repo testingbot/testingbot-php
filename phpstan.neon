@@ -1,0 +1,16 @@
+parameters:
+    level: 8
+    paths:
+        - src
+        - tests
+    tmpDir: .phpstan.cache
+    ignoreErrors:
+        # The TestingBotAPI facade keeps its 1.x parameter/return types loose on
+        # purpose, so existing callers (e.g. passing a numeric session id) never
+        # hit a TypeError. Intended types are described in each method's docblock.
+        -
+            identifier: missingType.parameter
+            path: src/TestingBotAPI.php
+        -
+            identifier: missingType.return
+            path: src/TestingBotAPI.php

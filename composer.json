@@ -1,34 +1,44 @@
 {
   "name": "testingbot/testingbot-php",
-  "type": "testingbot-php",
-  "description": "PHP version of the TestingBot API",
-  "keywords": ["testingbot", "api", "testing", "phpunit", "selenium", "appium"],
-  "homepage": "http://github.com/testingbot/testingbot-php",
+  "type": "library",
+  "description": "PHP client for the TestingBot API (cross-browser & device testing, screenshots, tunnels, storage, codeless tests).",
+  "keywords": ["testingbot", "api", "testing", "selenium", "appium", "cypress", "screenshots", "cross-browser"],
+  "homepage": "https://github.com/testingbot/testingbot-php",
   "license": "Apache-2.0",
   "authors": [{
     "name": "Jochen Delabie",
     "email": "info@testingbot.com",
     "homepage": "https://testingbot.com"
   }],
-  "repositories": [
-      {
-          "type": "vcs",
-          "url": "https://github.com/testingbot/testingbot-php"
-      }
-  ],
-  "require-dev": {
-    "phpunit/phpunit": ">=4.5.1"
-  },
   "require": {
-    "php": ">=5.4.0",
-    "phpunit/phpunit-selenium": ">=1.4.1",
-    "brianium/paratest": ">=0.12.1",
-    "appium/php-client": ">=0.1.0"
+    "php": ">=8.1",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-fileinfo": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5",
+    "phpstan/phpstan": "^1.11",
+    "friendsofphp/php-cs-fixer": "^3.59"
   },
   "autoload": {
-    "psr-0": {"TestingBot": "src/"}
+    "psr-4": {"TestingBot\\": "src/"}
+  },
+  "autoload-dev": {
+    "psr-4": {"TestingBot\\Tests\\": "tests/"}
+  },
+  "scripts": {
+    "test": "phpunit --testsuite unit",
+    "test:integration": "phpunit --testsuite integration",
+    "phpstan": "phpstan analyse",
+    "cs-check": "php-cs-fixer fix --dry-run --diff",
+    "cs-fix": "php-cs-fixer fix"
   },
   "support": {
-    "email": "info@testingbot.com"
+    "email": "info@testingbot.com",
+    "issues": "https://github.com/testingbot/testingbot-php/issues"
+  },
+  "config": {
+    "sort-packages": true
   }
 }
