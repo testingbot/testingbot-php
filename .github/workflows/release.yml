@@ -72,11 +72,19 @@ jobs:
             echo "No CHANGELOG section found for $version; GitHub will auto-generate notes."
           fi
 
-      - name: Create GitHub Release
+      - name: Create or update GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if [ -s release-notes.md ]; then
+          # Idempotent: the tag may already have a Release (e.g. created from
+          # the GitHub UI, which both tags and releases in one step). In that
+          # case update its notes instead of failing on a duplicate create.
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists; updating notes."
+            if [ -s release-notes.md ]; then
+              gh release edit "$GITHUB_REF_NAME" --notes-file release-notes.md
+            fi
+          elif [ -s release-notes.md ]; then
             gh release create "$GITHUB_REF_NAME" \
               --title "$GITHUB_REF_NAME" \
               --notes-file release-notes.md
