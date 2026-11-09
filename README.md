@@ -53,7 +53,9 @@ $client = new TestingBot\Client($key, $secret, [
 $client->tests()->list(0, 10, ['build' => 'ci-42']); // paginated, filterable
 $client->tests()->get($sessionId);
 $client->tests()->update($sessionId, ['name' => 'checkout', 'success' => false]);
-$client->tests()->create(['name' => 'external result', 'success' => true]);
+// test_environment_id (required): the browser_id of the browser/device it ran on,
+// from $client->browsers()->list()
+$client->tests()->create(['name' => 'external result', 'test_environment_id' => $browserId, 'success' => true]);
 $client->tests()->stop($sessionId);
 $client->tests()->delete($sessionId);
 ```
